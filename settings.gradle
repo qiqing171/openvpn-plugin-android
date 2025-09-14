@@ -1,11 +1,18 @@
-rootProject.name = "openvpn-plugin-android"
-
-// 配置仓库（Gradle 7.0+ 推荐方式）
+// settings.gradle
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        maven { url "https://jitpack.io" }
+        maven { url 'https://jitpack.io' }
     }
 }
+rootProject.name = "openvpn-plugin-android"
+include ':src' // 确保这里正确引用你的模块

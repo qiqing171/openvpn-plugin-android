@@ -1,49 +1,18 @@
-// 模块 build.gradle（当前文件）
-apply plugin: 'com.android.library'
-
-android {
-    compileSdkVersion 33
-    buildToolsVersion "33.0.0"
-
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 33
-        versionCode 1
-        versionName "1.0.0"
-        consumerProguardFiles 'proguard-rules.pro'
+// 项目级 build.gradle (根目录)
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
     }
-
-    signingConfigs {
-        release {
-            storeFile file(System.getenv("VPN_KEYSTORE_PATH") ?: "default_keystore.jks")
-            storePassword System.getenv("VPN_STORE_PASSWORD")
-            keyAlias System.getenv("VPN_KEY_ALIAS")
-            keyPassword System.getenv("VPN_KEY_PASSWORD")
-        }
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
-        }
-        debug {
-            minifyEnabled false
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0'
     }
 }
 
-dependencies {
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'de.blinkt.openvpn:core:0.7.32'
-    implementation 'com.github.dcloudio:uniplugin:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.2'
+// 删除 allprojects 块，因为仓库已经在 settings.gradle 中配置了
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }

@@ -1,26 +1,55 @@
-// 项目级build.gradle
-buildscript {
-    repositories {
-        // 必须添加Google仓库以获取Android插件
-        google()
-        mavenCentral()
+// src/build.gradle (模块级)
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+android {
+    compileSdk 33
+    buildToolsVersion "33.0.0"
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0.0"
+        consumerProguardFiles 'proguard-rules.pro'
     }
-    dependencies {
-        // Android Gradle插件版本（与Gradle 7.5兼容，需与之前配置匹配）
-        classpath 'com.android.tools.build:gradle:7.4.2'
+
+    signingConfigs {
+        release {
+            storeFile file(System.getenv("VPN_KEYSTORE_PATH") ?: "default_keystore.jks")
+            storePassword System.getenv("VPN_STORE_PASSWORD")
+            keyAlias System.getenv("VPN_KEY_ALIAS")
+            keyPassword System.getenv("VPN_KEY_PASSWORD")
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 
-// 所有模块共享的仓库配置
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url "https://jitpack.io" } // 用于uniplugin等第三方库
-    }
-}
-
-// 清理任务（可选）
-task clean(type: Delete) {
-    delete rootProject.buildDir
+dependencies {
+    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'de.blinkt.openvpn:core:0.7.32'
+    implementation 'com.github.dcloudio:uniplugin:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
 }
