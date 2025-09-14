@@ -1,6 +1,31 @@
 // 声明为Android库
 apply plugin: 'com.android.library'
 
+// 项目级build.gradle
+buildscript {
+    repositories {
+        google() // 必须添加，用于获取Android Gradle插件
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+    dependencies {
+        // Android Gradle插件（需与Gradle版本兼容）
+        classpath 'com.android.tools.build:gradle:7.4.2'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" } // 统一配置仓库，避免模块重复配置
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
 android {
     compileSdkVersion 33  // 适配的Android SDK版本
     buildToolsVersion "33.0.0"
