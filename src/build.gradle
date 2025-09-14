@@ -1,0 +1,26 @@
+// 项目级build.gradle
+buildscript {
+    repositories {
+        // 必须添加Google仓库以获取Android插件
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Android Gradle插件版本（与Gradle 7.5兼容，需与之前配置匹配）
+        classpath 'com.android.tools.build:gradle:7.4.2'
+    }
+}
+
+// 所有模块共享的仓库配置
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" } // 用于uniplugin等第三方库
+    }
+}
+
+// 清理任务（可选）
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

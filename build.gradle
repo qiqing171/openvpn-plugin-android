@@ -1,4 +1,4 @@
-// 声明为Android库
+// 模块级build.gradle（仅保留以下内容，删除末尾的repositories块）
 apply plugin: 'com.android.library'
 
 android {
@@ -15,11 +15,11 @@ android {
 
     signingConfigs {
         release {
-            // 注意：实际开发中建议使用环境变量或单独配置文件
-            // storeFile file("your_keystore.jks")
-            // storePassword "your_password"
-            // keyAlias "your_alias"
-            // keyPassword "your_key_password"
+            // 签名配置（保持不变）
+            storeFile file("your_keystore.jks")
+            storePassword "your_password"
+            keyAlias "your_alias"
+            keyPassword "your_key_password"
         }
     }
 
@@ -40,8 +40,8 @@ android {
     }
 }
 
-// 依赖配置必须在android块外部
 dependencies {
+    // 依赖配置（保持不变）
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
@@ -50,9 +50,4 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.2'
 }
 
-// 仓库配置必须放在此处（模块级），且不能嵌套在其他块中
-repositories {
-    google()
-    mavenCentral()
-    maven { url "https://jitpack.io" }
-}
+// 注意：删除原有的repositories块，仓库配置已移至项目级build.gradle
