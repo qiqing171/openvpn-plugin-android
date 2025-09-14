@@ -1,0 +1,67 @@
+// 声明为Android库
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 33  // 适配的Android SDK版本
+    buildToolsVersion "33.0.0"
+
+    defaultConfig {
+        minSdkVersion 21    // 最低支持Android 5.0
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0.0"
+
+        // 支持Uniapp插件调用的配置
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+
+    // 签名配置（发布时需要）
+    signingConfigs {
+        release {
+            storeFile file("your_keystore.jks")
+            storePassword "your_password"
+            keyAlias "your_alias"
+            keyPassword "your_key_password"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true  // 开启混淆
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    // 依赖库版本统一管理
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    // Android基础库
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+
+    // OpenVPN核心库（ics-openvpn）
+    implementation 'de.blinkt.openvpn:core:0.7.32'  // 开源的OpenVPN实现
+
+    // Uniapp插件桥接库（必要！用于JS与原生通信）
+    implementation 'com.github.dcloudio:uniplugin:1.0.0'  // 版本需与Uniapp对应
+
+    // 网络统计相关库
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.2'
+}
+
+// 配置Maven仓库（用于下载依赖）
+repositories {
+    google()
+    mavenCentral()
+    maven { url "https://jitpack.io" }  // 包含uniplugin等第三方库
+}
